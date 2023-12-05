@@ -1,0 +1,144 @@
+plugins {
+    id 'java'
+    id 'war'
+    id 'maven-publish'
+    //id 'org.liquibase.gradle' version '2.1.1'
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+
+    maven {
+        url = uri("https://maven.pkg.github.com/heaven-land/api-account-management")
+        credentials {
+            username = mavenRepoUsername
+            password = mavenRepoPassword
+        }
+    }
+
+    maven {
+        url "https://europe-west1-maven.pkg.dev/heavenland-common/heavenland-maven-repo"
+        credentials {
+            username = "_json_key_base64"
+            password = artifactRegistryMavenSecret
+        }
+        authentication {
+            basic(BasicAuthentication)
+        }
+    }
+}
+
+dependencies {
+    // https://mvnrepository.com/artifact/jakarta.platform/jakarta.jakartaee-web-api
+    providedCompile 'jakarta.platform:jakarta.jakartaee-api:9.1.0'
+
+    implementation 'commons-io:commons-io:2.11.0'
+
+    /* JSON */
+
+    // Jackson
+    // https://mvnrepository.com/artifact/org.glassfish.jersey.media/jersey-media-json-jackson
+    implementation 'org.glassfish.jersey.media:jersey-media-json-jackson:3.0.4'
+
+    /* Database */
+
+    // https://mvnrepository.com/artifact/org.hibernate/hibernate-core
+    implementation 'org.hibernate:hibernate-core-jakarta:5.6.5.Final'
+    annotationProcessor 'org.hibernate:hibernate-jpamodelgen-jakarta:5.6.5.Final'
+
+    // https://mvnrepository.com/artifact/org.mariadb.jdbc/mariadb-java-client
+    //implementation 'org.mariadb.jdbc:mariadb-java-client:3.0.3'
+    // https://mvnrepository.com/artifact/mysql/mysql-connector-java
+    implementation 'mysql:mysql-connector-java:8.0.28'
+
+    // https://mvnrepository.com/artifact/com.google.guava/guava
+    implementation group: 'com.google.guava', name: 'guava', version: '11.0.2'
+
+
+    /* Liquibase */
+
+//    liquibaseRuntime 'org.liquibase:liquibase-core:4.7.1'
+//    liquibaseRuntime 'info.picocli:picocli:4.6.3'
+//    liquibaseRuntime group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.1'
+//    liquibaseRuntime 'mysql:mysql-connector-java:8.0.28'
+    //liquibaseRuntime 'org.liquibase.ext:liquibase-hibernate5:3.6'
+
+    /* Logging */
+
+    // https://mvnrepository.com/artifact/org.slf4j/slf4j-api
+    implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.36'
+    // https://mvnrepository.com/artifact/org.tinylog/slf4j-tinylog
+    runtimeOnly 'org.tinylog:slf4j-tinylog:2.4.1'
+    // https://mvnrepository.com/artifact/org.tinylog/tinylog-impl
+    implementation 'org.tinylog:tinylog-impl:2.4.1'
+
+    // https://mvnrepository.com/artifact/org.bitcoinj/bitcoinj-core
+    implementation group: 'org.bitcoinj', name: 'bitcoinj-core', version: '0.16.1'
+
+    /* lombok */
+    compileOnly 'org.projectlombok:lombok:1.18.24'
+    annotationProcessor 'org.projectlombok:lombok:1.18.24'
+
+    testCompileOnly 'org.projectlombok:lombok:1.18.24'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.24'
+
+    // https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
+    implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.12.0'
+    // https://mvnrepository.com/artifact/org.apache.commons/commons-collections4
+    implementation group: 'org.apache.commons', name: 'commons-collections4', version: '4.4'
+
+
+    /* Tests */
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:5.8.2")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.2")
+
+    testImplementation("org.glassfish.jersey.core:jersey-common:3.0.4")
+    testImplementation("org.glassfish.jersey.core:jersey-client:3.0.4")
+    // https://mvnrepository.com/artifact/org.glassfish.jersey.inject/project
+    testImplementation group: 'org.glassfish.jersey.inject', name: 'jersey-hk2', version: '3.0.4'
+    testImplementation group: 'uk.org.webcompere', name: 'system-stubs-jupiter', version: '2.0.1'
+
+    /* Other */
+    implementation group: "io.heavenland.api.core", name: "api-core", version: "0.14"
+    implementation group: "io.heavenland", name: "solanaj", version: "1.4.1"
+    implementation group: "io.heavenland.tools.solana", name: "solanaj-wrapper", version: "1.4.0"
+    implementation group: "io.heavenland.common.nfts.static", name: "nft-static-data", version: "1.4.0"
+    implementation group: "io.heavenland.tools.metaplex", name: "metaplex-java", version: "1.0.0"
+    implementation group: 'com.syntifi.near', name: 'borshj', version: '0.1.0' // TODO should be inside the metaplex java package, but it is not working without explicit dependency
+
+    implementation group: 'io.heavenland.clients.api', name: 'nft-metadata-reader', version: '1.1'
+}
+
+compileJava {
+    targetCompatibility = '11'
+    sourceCompatibility = '11'
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs 'src/java'
+        }
+    }
+
+    test {
+        java {
+            srcDirs 'src'
+        }
+    }
+}
+
+test {
+    useJUnitPlatform()
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
+
+war {
+    archiveName "heavenland-mebot.war"
+}
+
+

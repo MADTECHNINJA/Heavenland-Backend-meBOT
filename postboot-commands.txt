@@ -1,0 +1,10 @@
+# asadmin commands
+
+# data source
+#create-jdbc-connection-pool --datasourceclassname com.mysql.cj.jdbc.MysqlConnectionPoolDataSource --restype javax.sql.ConnectionPoolDataSource mysql-jdbc-connection-pool
+#set resources.jdbc-connection-pool.mysql-jdbc-connection-pool.property.username=${ENV=DB_USER}
+#set resources.jdbc-connection-pool.mysql-jdbc-connection-pool.property.password=${ENV=DB_PASSWORD}
+#set resources.jdbc-connection-pool.mysql-jdbc-connection-pool.property.url=${ENV=DB_URL}
+#create-jdbc-resource --enabled=true --connectionpoolid mysql-jdbc-connection-pool jdbc/mysql-resource
+
+#create-managed-executor-service --enabled=true --longrunningtasks=true concurrent/default-managed-executor-service

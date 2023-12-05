@@ -1,0 +1,9 @@
+/.gradle/
+/build/
+/gradle/
+/gradle.properties
+/gradlew
+/gradlew.bat
+src/main/java/io/heavenland/mebot/Secrets.java
+/private_keys/
+.idea

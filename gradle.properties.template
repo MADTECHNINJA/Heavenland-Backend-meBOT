@@ -1,0 +1,9 @@
+projectName = marketplace-api
+projectGroup = io.heavenland.api.marketplace
+projectVersion = 1.4.2
+
+mavenRepoUsername =
+mavenRepoPassword =
+
+productionDbUsername =
+productionDbPassword =
